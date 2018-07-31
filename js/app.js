@@ -31,19 +31,35 @@ function shuffle(array) {
  *  - display the card's symbol (put this functionality in another function that you call from this one)*/
 const deck = document.querySelector(".deck");
 
+let toggledCards = [];
+
+deck.addEventListener("click", event => {
+  const clickTarget = event.target;
+  if (clickTarget.classList.contains("card") && toggledCards.length < 2 ) {
+    toggleCard(clickTarget);
+    addToggleCard(clickTarget);
+    if (toggledCards.length === 2) {
+      console.log("2 cards!");
+    }
+  }
+});
+
 function toggleCard(clickTarget) {
   clickTarget.classList.toggle("open");
   clickTarget.classList.toggle("show");
 }
 
-deck.addEventListener("click", event => {
-  const clickTarget = event.target;
-  if (clickTarget.classList.contains("card")) {
-    toggleCard(clickTarget);
-  }
-})
+function addToggleCard(clickTarget) {
+  toggledCards.push(clickTarget);
+  console.log(toggledCards);
+}
+
  /*
  *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
+ */
+
+
+ /*
  *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
