@@ -36,8 +36,10 @@ let toggledCards = [];
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
   if (clickTarget.classList.contains("card") &&
+  !clickTarget.classList.contains("match") &&
   toggledCards.length < 2 &&
   !toggledCards.includes(clickTarget)  ) {
+
   toggleCard(clickTarget);
   addToggleCard(clickTarget);
   if (toggledCards.length === 2) {
@@ -78,6 +80,16 @@ function addToggleCard(clickTarget) {
    }, 1000);
  }
 }
+
+function shuffleDeck() {
+  const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
+  const shuffledCards = shuffle(cardsToShuffle);
+  for (card of shuffledCards) {
+    deck.appendChild(card);
+  }
+}
+shuffleDeck();
+
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
