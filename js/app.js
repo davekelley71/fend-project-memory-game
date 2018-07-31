@@ -35,11 +35,13 @@ let toggledCards = [];
 
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
-  if (clickTarget.classList.contains("card") && toggledCards.length < 2 ) {
-    toggleCard(clickTarget);
-    addToggleCard(clickTarget);
-    if (toggledCards.length === 2) {
-      checkForMatch();
+  if (clickTarget.classList.contains("card") &&
+  toggledCards.length < 2 &&
+  !toggledCards.includes(clickTarget)  ) {
+  toggleCard(clickTarget);
+  addToggleCard(clickTarget);
+  if (toggledCards.length === 2) {
+      checkForMatch(clickTarget);
     }
   }
 });
