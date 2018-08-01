@@ -33,6 +33,8 @@ const deck = document.querySelector(".deck");
 
 let toggledCards = [];
 
+let moves = 0;
+
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
   if (clickTarget.classList.contains("card") &&
@@ -45,6 +47,7 @@ deck.addEventListener("click", event => {
   if (toggledCards.length === 2) {
       checkForMatch(clickTarget);
       addMove();
+      checkScore();
     }
   }
 });
@@ -91,12 +94,29 @@ function shuffleDeck() {
 }
 shuffleDeck();
 
-let moves = 0;
+
 function addMove() {
   moves++;
   const movesText = document.querySelector(".moves");
   movesText.innerHTML = moves;
 }
+
+function checkScore() {
+  if (moves === 12 || moves === 20)
+    { hideStar();
+  }
+}
+
+function hideStar() {
+  const starList = document.querySelectorAll(".stars i");
+  for (star of starList) {
+    if (star.style.display !== "none") {
+      star.style.display = "none";
+      break;
+    }
+  }
+}
+
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
