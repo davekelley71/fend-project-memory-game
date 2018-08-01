@@ -35,8 +35,18 @@ let toggledCards = [];
 
 let moves = 0;
 
+let clockOff = true;
+
+let time = 0;
+
+let clockId;
+
+let isClickValid;
+
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
+
+
   if (clickTarget.classList.contains("card") &&
   !clickTarget.classList.contains("match") &&
   toggledCards.length < 2 &&
@@ -50,7 +60,15 @@ deck.addEventListener("click", event => {
       checkScore();
     }
   }
+  if (isClickValid(clickTarget)) {
+    if (clockOff) {
+      startClock();
+      clockOff = false;
+    }
+  }
 });
+
+
 
 function toggleCard(card) {
   card.classList.toggle("open");
@@ -116,6 +134,39 @@ function hideStar() {
     }
   }
 }
+
+function startClock() {
+  clockId = setInterval(() => {
+    time++;
+    console.log(time);
+  }, 1000);
+}
+startClock();
+
+function displayTime ()  {
+  const clock = document.querySelector(".clock");
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time / 60);
+  if (seconds < 10) {
+    clock.innerHTML = "${minutes}:0${seconds}";
+  } else {
+    clock.innerHTML = "${minutes}:${seconds}"
+  }
+  console.log(clock);
+  clock.innerHTML = time;
+}
+displayTime();
+
+function stopClock() {
+  clearInterval(clockId);
+}
+
+
+
+
+
+
+
 
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
