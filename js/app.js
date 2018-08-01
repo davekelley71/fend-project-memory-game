@@ -44,6 +44,7 @@ deck.addEventListener("click", event => {
   addToggleCard(clickTarget);
   if (toggledCards.length === 2) {
       checkForMatch(clickTarget);
+      addMove();
     }
   }
 });
@@ -89,6 +90,13 @@ function shuffleDeck() {
   }
 }
 shuffleDeck();
+
+let moves = 0;
+function addMove() {
+  moves++;
+  const movesText = document.querySelector(".moves");
+  movesText.innerHTML = moves;
+}
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
