@@ -191,7 +191,7 @@ function writeModalStats() {
   movesStat.innerHTML = `Moves = ${moves}`;
   starsStat.innerHTML = `Stars = ${stars}`;
 }
-writeModalStats();
+
 
 
 document.querySelector(".modal_cancel").addEventListener("click", () => {
@@ -202,14 +202,12 @@ document.querySelector(".modal_replay").addEventListener("click", () => {
   console.log("replay");
 });
 
-function resetGame() {
-  resetClockAndTime();
-}
+
 function resetClockAndTime() {
-  stopClock();
   clockOff = true;
   time = 0;
   displayTime();
+  startClock();
 }
 
 function resetMoves () {
@@ -228,19 +226,25 @@ function resetStars() {
   stars = 3;
 }
 
-document.querySelector(".restart").addEventListener("click", resetGame());
+document.querySelector(".restart").addEventListener("click", () => {
+  resetGame();
+});
 
-document.querySelector(".modal_replay").addEventListener("click", resetGame());
+document.querySelector(".modal_replay").addEventListener("click", () => {
+  replayGame();
+});
 
-
+const TOTAL_PAIRS = 8;
 
 function gameOver() {
-  const TOTAL_PAIRS = 8;
-  if (matched === TOTAL_PAIRS) {
     stopClock();
     writeModalStats();
     toggleModal();
   }
+
+
+if (matched === TOTAL_PAIRS) {
+  gameOver();
 }
 
 function replayGame() {
@@ -248,7 +252,7 @@ function replayGame() {
   toggleModal();
 }
 
-document.querySelector(".modal_replay").addEventListener("click", replayGame());
+
 
 function resetCards() {
   const cards = document.querySelectorAll(".deck li");
@@ -256,6 +260,7 @@ function resetCards() {
     card.className = "card";
   }
 }
+
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
