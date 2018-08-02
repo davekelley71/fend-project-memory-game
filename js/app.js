@@ -30,18 +30,13 @@ function shuffle(array) {
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)*/
 const deck = document.querySelector(".deck");
-
 let toggledCards = [];
-
 let moves = 0;
-
 let clockOff = true;
-
 let time = 0;
-
 let clockId;
-
-let isClickValid;
+let isClickValid = true;
+let matched = 0;
 
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
@@ -60,12 +55,8 @@ deck.addEventListener("click", event => {
       checkScore();
     }
   }
-  if (isClickValid(clickTarget)) {
-    if (clockOff) {
-      startClock();
-      clockOff = false;
-    }
-  }
+
+
 });
 
 
@@ -94,6 +85,7 @@ function addToggleCard(clickTarget) {
      toggledCards[0].classList.toggle("match");
      toggledCards[1].classList.toggle("match");
      toggledCards = [];
+     matched++;
    } else {
      setTimeout(() => {
      toggleCard(toggledCards[0]);
@@ -141,33 +133,129 @@ function startClock() {
     console.log(time);
   }, 1000);
 }
+
 startClock();
 
 function displayTime ()  {
   const clock = document.querySelector(".clock");
   const minutes = Math.floor(time / 60);
-  const seconds = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
   if (seconds < 10) {
-    clock.innerHTML = "${minutes}:0${seconds}";
+    clock.innerHTML = `${minutes}:0${seconds}`;
   } else {
-    clock.innerHTML = "${minutes}:${seconds}"
+    clock.innerHTML = `${minutes}:${seconds}`
   }
   console.log(clock);
   clock.innerHTML = time;
 }
-displayTime();
+
 
 function stopClock() {
   clearInterval(clockId);
 }
 
+function toggleModal() {
+  const modal = document.querySelector(".modal_background");
+  modal.classList.toggle("hide");
+}
 
 
 
+/* Modal tests
+time = 121;
+displayTime();
+moves = 16;
+checkScore();
+*/
+
+
+function getStars() {
+  stars = document.querySelectorAll(".stars li");
+  starCount = 0;
+  for (star of stars) {
+    if (star.style.display !== "none") {
+      starCount++;
+    }
+  }
+  console.log(starCount);
+  return starCount;
+}
+
+function writeModalStats() {
+  const timeStat = document.querySelector(".modal_time");
+  const clockTime = document.querySelector(".clock").innerHTML;
+  const movesStat = document.querySelector(".modal_moves");
+  const starsStat = document.querySelector(".modal_stars");
+  const stars = getStars();
+  timeStat.innerHTML = `Time = ${clockTime}`;
+  movesStat.innerHTML = `Moves = ${moves}`;
+  starsStat.innerHTML = `Stars = ${stars}`;
+}
+writeModalStats();
+
+
+document.querySelector(".modal_cancel").addEventListener("click", () => {
+  toggleModal();
+});
+
+document.querySelector(".modal_replay").addEventListener("click", () => {
+  console.log("replay");
+});
+
+function resetGame() {
+  resetClockAndTime();
+}
+function resetClockAndTime() {
+  stopClock();
+  clockOff = true;
+  time = 0;
+  displayTime();
+}
+
+function resetMoves () {
+  moves = 0;
+  document.querySelector(".moves").innerHTML = moves;
+}
+
+function resetGame() {
+  resetClockAndTime();
+  resetMoves();
+  resetStars();
+  shuffleDeck();
+}
+
+function resetStars() {
+  stars = 3;
+}
+
+document.querySelector(".restart").addEventListener("click", resetGame());
+
+document.querySelector(".modal_replay").addEventListener("click", resetGame());
 
 
 
+function gameOver() {
+  const TOTAL_PAIRS = 8;
+  if (matched === TOTAL_PAIRS) {
+    stopClock();
+    writeModalStats();
+    toggleModal();
+  }
+}
 
+function replayGame() {
+  resetGame();
+  toggleModal();
+}
+
+document.querySelector(".modal_replay").addEventListener("click", replayGame());
+
+function resetCards() {
+  const cards = document.querySelectorAll(".deck li");
+  for (let card of cards) {
+    card.className = "card";
+  }
+}
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
