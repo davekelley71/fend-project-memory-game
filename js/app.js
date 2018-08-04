@@ -35,17 +35,18 @@ let moves = 0;
 let clockOff = true;
 let time = 0;
 let clockId;
-let isClickValid = true;
-let matched = 0;
+let matched;
+
+
+
 
 deck.addEventListener("click", event => {
   const clickTarget = event.target;
-
-
   if (clickTarget.classList.contains("card") &&
   !clickTarget.classList.contains("match") &&
   toggledCards.length < 2 &&
-  !toggledCards.includes(clickTarget)  ) {
+  !toggledCards.includes(clickTarget)
+  ) {
 
   toggleCard(clickTarget);
   addToggleCard(clickTarget);
@@ -53,17 +54,14 @@ deck.addEventListener("click", event => {
       checkForMatch(clickTarget);
       addMove();
       checkScore();
-    }
+      }
   }
-
-
 });
 
 
-
-function toggleCard(card) {
-  card.classList.toggle("open");
-  card.classList.toggle("show");
+function toggleCard(clickTarget) {
+  clickTarget.classList.toggle("open");
+  clickTarget.classList.toggle("show");
 }
 /*  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
 */
@@ -85,7 +83,6 @@ function addToggleCard(clickTarget) {
      toggledCards[0].classList.toggle("match");
      toggledCards[1].classList.toggle("match");
      toggledCards = [];
-     matched++;
    } else {
      setTimeout(() => {
      toggleCard(toggledCards[0]);
@@ -97,12 +94,14 @@ function addToggleCard(clickTarget) {
 
 function shuffleDeck() {
   const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
+  console.log("Cards to shuffle", cardsToShuffle);
   const shuffledCards = shuffle(cardsToShuffle);
+  console.log("shuffledCards", shuffledCards);
   for (card of shuffledCards) {
     deck.appendChild(card);
   }
 }
-shuffleDeck();
+
 
 
 function addMove() {
@@ -118,7 +117,7 @@ function checkScore() {
 }
 
 function hideStar() {
-  const starList = document.querySelectorAll(".stars i");
+  const starList = document.querySelectorAll(".stars li");
   for (star of starList) {
     if (star.style.display !== "none") {
       star.style.display = "none";
@@ -128,25 +127,25 @@ function hideStar() {
 }
 
 function startClock() {
-  clockId = setInterval(() => {
+    clockId = setInterval(() => {
     time++;
+    displayTime();
     console.log(time);
   }, 1000);
 }
-
 startClock();
+
 
 function displayTime ()  {
   const clock = document.querySelector(".clock");
+  clock.innerHTML = time;
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
   if (seconds < 10) {
     clock.innerHTML = `${minutes}:0${seconds}`;
   } else {
-    clock.innerHTML = `${minutes}:${seconds}`
+    clock.innerHTML = `${minutes}:${seconds}`;
   }
-  console.log(clock);
-  clock.innerHTML = time;
 }
 
 
@@ -157,7 +156,9 @@ function stopClock() {
 function toggleModal() {
   const modal = document.querySelector(".modal_background");
   modal.classList.toggle("hide");
+  modal.classList.toggle("show");
 }
+
 
 
 
@@ -171,8 +172,8 @@ checkScore();
 
 function getStars() {
   stars = document.querySelectorAll(".stars li");
-  starCount = 0;
-  for (star of stars) {
+  starCount = 3;
+  for (var star of stars) {
     if (star.style.display !== "none") {
       starCount++;
     }
@@ -180,13 +181,13 @@ function getStars() {
   console.log(starCount);
   return starCount;
 }
-
+stars = getStars();
 function writeModalStats() {
   const timeStat = document.querySelector(".modal_time");
   const clockTime = document.querySelector(".clock").innerHTML;
   const movesStat = document.querySelector(".modal_moves");
   const starsStat = document.querySelector(".modal_stars");
-  const stars = getStars();
+
   timeStat.innerHTML = `Time = ${clockTime}`;
   movesStat.innerHTML = `Moves = ${moves}`;
   starsStat.innerHTML = `Stars = ${stars}`;
@@ -195,20 +196,18 @@ function writeModalStats() {
 
 
 document.querySelector(".modal_cancel").addEventListener("click", () => {
-  toggleModal();
+  toggleModal("hide");
 });
 
 document.querySelector(".modal_replay").addEventListener("click", () => {
-  console.log("replay");
+  toggleModal("hide");
 });
-
 
 function resetClockAndTime() {
   clockOff = true;
   time = 0;
-  displayTime();
-  startClock();
-}
+  displayTime("Time");
+  }
 
 function resetMoves () {
   moves = 0;
@@ -223,41 +222,36 @@ function resetGame() {
 }
 
 function resetStars() {
-  stars = 3;
+  stars;
 }
 
 document.querySelector(".restart").addEventListener("click", () => {
   resetGame();
-});
+  });
 
-document.querySelector(".modal_replay").addEventListener("click", () => {
-  replayGame();
-});
 
-const TOTAL_PAIRS = 8;
+
+
 
 function gameOver() {
-    stopClock();
-    writeModalStats();
-    toggleModal();
-  }
-
-
+    const TOTAL_PAIRS = 8;
 if (matched === TOTAL_PAIRS) {
-  gameOver();
-}
-
-function replayGame() {
-  resetGame();
+  stopClock();
+  writeModalStats();
+  toggleModal("show");
+  console.log("Game Over");
+    }
+  }
   toggleModal();
-}
+  
 
 
 
 function resetCards() {
   const cards = document.querySelectorAll(".deck li");
-  for (let card of cards) {
+  for (card of cards) {
     card.className = "card";
+    shuffleDeck();
   }
 }
 
