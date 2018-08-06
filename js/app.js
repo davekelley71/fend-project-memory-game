@@ -66,10 +66,9 @@ deck.addEventListener("click", event => {
       checkForMatch(clickTarget);
       addMove();
       checkScore();
-      }
+    }
   }
 });
-
 
 function toggleCard(clickTarget) {
   clickTarget.classList.toggle("open");
@@ -98,13 +97,14 @@ function addToggleCard(clickTarget) {
      toggledCards[1].classList.toggle("match");
      toggledCards = [];
      matched++;
-   } else {
+
+ } else {
      setTimeout(() => {
      toggleCard(toggledCards[0]);
      toggleCard(toggledCards[1]);
      toggledCards = [];
    }, 1000);
- }
+     }
 }
 
 function shuffleDeck() {
@@ -114,12 +114,6 @@ function shuffleDeck() {
     resetCards();
   }
 }
-
-
-
-
-
-
 
 function addMove() {
   moves++;
@@ -152,7 +146,6 @@ function startClock() {
 }
 
 
-
 function displayTime ()  {
   const clock = document.querySelector(".clock");
   clock.innerHTML = time;
@@ -165,11 +158,9 @@ function displayTime ()  {
   }
 }
 
-
 function stopClock() {
   clearInterval(clockId);
 }
-
 
 function toggleModal() {
   const modal = document.querySelector(".modal_background");
@@ -211,8 +202,6 @@ function writeModalStats() {
   starsStat.innerHTML = `Stars = ${stars}`;
 }
 
-
-
 document.querySelector(".modal_cancel").addEventListener("click", () => {
   toggleModal("hide");
 });
@@ -249,29 +238,12 @@ document.querySelector(".restart").addEventListener("click", () => {
   resetGame();
   });
 
-
-
-
-
-
 function gameOver() {
   stopClock();
   writeModalStats();
   toggleModal();
   resetCards();
- {
-  if (matched === 8) {
-        gameOver();
-    }
-  }
 }
-
-
-
-
-
-
-
 
 function resetCards() {
   const cards = document.querySelectorAll(".deck li");
