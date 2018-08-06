@@ -239,10 +239,15 @@ document.querySelector(".restart").addEventListener("click", () => {
   });
 
 function gameOver() {
+  const TOTAL_PAIRS = 8;
   stopClock();
   writeModalStats();
   toggleModal();
-  resetCards();
+  resetCards(); {
+    if (matched === TOTAL_PAIRS) {
+      gameOver();
+    }
+  }
 }
 
 function resetCards() {
