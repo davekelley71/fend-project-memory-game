@@ -1,6 +1,16 @@
 /*
  * Create a list that holds all of your cards
  */
+let cardsArray = [
+  "fa-diamond",
+  "fa-paper-plane",
+  "fa-anchor",
+  "fa-bolt",
+  "fa-cube",
+  "fa-leaf",
+  "fa-bicycle",
+  "fa-bomb"
+]
 
 
 /*
@@ -35,8 +45,10 @@ let moves = 0;
 let clockOff = true;
 let time = 0;
 let clockId;
-let matched;
-
+let matched = 0;
+let card = document.querySelector(".card");
+const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
+const shuffledCards = shuffle(cardsToShuffle);
 
 
 
@@ -70,6 +82,8 @@ function addToggleCard(clickTarget) {
   console.log(toggledCards);
 }
 
+
+
 /*
  *  - if the list already has another card, check to see if the two cards match*/
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
@@ -93,14 +107,18 @@ function addToggleCard(clickTarget) {
 }
 
 function shuffleDeck() {
-  const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
   console.log("Cards to shuffle", cardsToShuffle);
-  const shuffledCards = shuffle(cardsToShuffle);
   console.log("shuffledCards", shuffledCards);
   for (card of shuffledCards) {
     deck.appendChild(card);
+    card.visibility = "none";
+    resetCards();
   }
 }
+
+
+
+
 
 
 
@@ -111,7 +129,7 @@ function addMove() {
 }
 
 function checkScore() {
-  if (moves === 12 || moves === 20)
+  if (moves === 14 || moves === 20)
     { hideStar();
   }
 }
@@ -152,6 +170,7 @@ function displayTime ()  {
 function stopClock() {
   clearInterval(clockId);
 }
+
 
 function toggleModal() {
   const modal = document.querySelector(".modal_background");
@@ -201,6 +220,7 @@ document.querySelector(".modal_cancel").addEventListener("click", () => {
 
 document.querySelector(".modal_replay").addEventListener("click", () => {
   toggleModal("hide");
+  shuffleDeck();
 });
 
 function resetClockAndTime() {
@@ -231,27 +251,30 @@ document.querySelector(".restart").addEventListener("click", () => {
 
 
 
-
+const TOTAL_PAIRS = 8;
 
 function gameOver() {
-    const TOTAL_PAIRS = 8;
-if (matched === TOTAL_PAIRS) {
   stopClock();
   writeModalStats();
-  toggleModal("show");
-  console.log("Game Over");
-    }
-  }
   toggleModal();
-  
+  resetGame();
+}
+
+if (TOTAL_PAIRS = true) {
+        gameOver();
+}
+
+
+
+
+
 
 
 
 function resetCards() {
   const cards = document.querySelectorAll(".deck li");
-  for (card of cards) {
+  for (let card of cards) {
     card.className = "card";
-    shuffleDeck();
   }
 }
 
