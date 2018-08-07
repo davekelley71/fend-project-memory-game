@@ -45,10 +45,11 @@ let moves = 0;
 let clockOff = true;
 let time = 0;
 let clockId;
-let matched;
+let matched = 0;
 let card = document.querySelector(".card");
 const cardsToShuffle = Array.from(document.querySelectorAll(".deck li"));
 const shuffledCards = shuffle(cardsToShuffle);
+const TOTAL_MATCH = 8;
 
 startClock();
 
@@ -88,7 +89,7 @@ function addToggleCard(clickTarget) {
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
 */
- function checkForMatch() {
+function checkForMatch() {
    if (
      toggledCards[0].firstElementChild.className ===
      toggledCards[1].firstElementChild.className
@@ -97,8 +98,8 @@ function addToggleCard(clickTarget) {
      toggledCards[1].classList.toggle("match");
      toggledCards = [];
      matched++;
-
- } else {
+      }
+    else {
      setTimeout(() => {
      toggleCard(toggledCards[0]);
      toggleCard(toggledCards[1]);
@@ -110,7 +111,6 @@ function addToggleCard(clickTarget) {
 function shuffleDeck() {
   for (card of shuffledCards) {
     deck.appendChild(card);
-    card.visibility = "none";
     resetCards();
   }
 }
@@ -190,6 +190,7 @@ function getStars() {
   console.log(starCount);
   return starCount;
 }
+
 stars = getStars();
 function writeModalStats() {
   const timeStat = document.querySelector(".modal_time");
@@ -228,7 +229,7 @@ function resetGame() {
   resetStars();
   shuffleDeck();
   startClock();
-}
+ }
 
 function resetStars() {
   stars;
@@ -239,16 +240,15 @@ document.querySelector(".restart").addEventListener("click", () => {
   });
 
 function gameOver() {
-  const TOTAL_PAIRS = 8;
   stopClock();
   writeModalStats();
   toggleModal();
-  resetCards(); {
-    if (matched === TOTAL_PAIRS) {
-      gameOver();
-    }
+  resetCards();
   }
-}
+
+  if (matched.length === 8) {
+    gameOver();
+  }
 
 function resetCards() {
   const cards = document.querySelectorAll(".deck li");
@@ -256,7 +256,6 @@ function resetCards() {
     card.className = "card";
   }
 }
-
 
  /*    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
